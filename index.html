@@ -41,7 +41,7 @@
             <div class="inputs">
                 <div class="input-group">
                     <label" for="">Departure</label>
-                    <input class="inp-style" type="date" name="">
+                        <input class="inp-style" type="date" name="">
                 </div>
                 <div class="input-group">
                     <label for="">Return</label>
@@ -51,20 +51,26 @@
             <div class="input-group f-class">
                 <div>
                     <label for="">First Class ($150)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <input id="first-class-count" class="inp-style inp-width" type="number" name="" min="0" value="0">
                 </div>
                 <div class="plus-minus-btn">
-                    <p>+ -</p>
+                    <button onCLick="handleFlightPrice('first-class', true)" class="btn" type="button">+</button>
+                </div>
+                <div class="plus-minus-btn">
+                    <button onCLick="handleFlightPrice('first-class', false)" class="btn" type="button">-</button>
                 </div>
             </div>
-            
+
             <div class="input-group f-class">
                 <div>
                     <label for="">Economy ($100)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <input id="economy-class-count" class="inp-style inp-width" value="0">
                 </div>
                 <div class="plus-minus-btn">
-                    <p> <span>+</span> <span>-</span> </p>
+                    <button onCLick="handleFlightPrice('economy-class', true)" class="btn" type="button">+</button>
+                </div>
+                <div class="plus-minus-btn">
+                    <button onCLick="handleFlightPrice('economy-class', false)" class="btn" type="button">-</button>
                 </div>
             </div>
             <div class="calculations">
@@ -73,7 +79,7 @@
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p>$500</p>
+                        <p id="sub-total">$00</p>
                     </div>
                 </div>
 
@@ -82,7 +88,7 @@
                         <p>Charge 10% VAT</p>
                     </div>
                     <div class="right">
-                        <p>$50</p>
+                        <p id="vat-amount">$00</p>
                     </div>
                 </div>
                 <hr>
@@ -91,20 +97,96 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$550</p>
+                        <p id="grand-total">$00</p>
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
+            <button class="btn-style" id="myBtn" class="trigger">Book Now</button>
         </div>
+
 
         <div class="booking-content">
             <h1>discover <br> around the world</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicingelit. Provident voluptatibus quam fuga laborumalias veniam libero autem quasi maxime ullam vero nama imi dolor, architecto ab facilis eaque deserunt nobise voluptatibus quam</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicingelit. Provident voluptatibus quam fuga laborumalias
+                veniam libero autem quasi maxime ullam vero nama imi dolor, architecto ab facilis eaque deserunt nobise
+                voluptatibus quam</p>
         </div>
-    </section>
 
-    <!--Thank You-->
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p><b>Successfully Flight Booked.</b></p>
+        
+            </div>
+
+        </div>
+        </section>
+
+        <!--Thank You-->
+
+        <script>
+            function handleFlightPrice(flight, isIncrease) {
+                const flightCount = getInputValue(flight);
+                let flightNewCount = flightCount;
+                if (isIncrease == true) {
+                    flightNewCount = flightCount + 1;
+                }
+                if (isIncrease == false && flightCount > 0) {
+                    flightNewCount = flightCount - 1;
+                }
+                document.getElementById(flight + '-count').value = flightNewCount;
+                calculateTotal();
+            }
+            // function for Total Price Calculation
+            function calculateTotal() {
+                const economyClassCount = getInputValue('economy-class');
+                const firstClassCount = getInputValue('first-class');
+                // Total Price Calculate
+                const totalPrice = firstClassCount * 150 + economyClassCount * 100;
+                document.getElementById('sub-total').innerText = "$" + totalPrice;
+                // vat calculate on total price
+                const vat = Math.round(totalPrice * 0.1);
+                document.getElementById('vat-amount').innerText = '$' + vat;
+                // vat + total price to calculate grand total
+                const grandTotal = totalPrice + tax;
+                document.getElementById('grand-total').innerText = '$' + grandTotal;
+            }
+            // return the flight count using getInputValue function
+            function getInputValue(flight) {
+                const flightInput = document.getElementById(flight + '-count');
+                const flightCount = parseInt(flightInput.value);
+                return flightCount;
+            }
+
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
 </body>
 
 </html>
