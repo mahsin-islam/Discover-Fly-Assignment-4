@@ -151,7 +151,7 @@
                 const vat = Math.round(totalPrice * 0.1);
                 document.getElementById('vat-amount').innerText = '$' + vat;
                 // vat + total price to calculate grand total
-                const grandTotal = totalPrice + tax;
+                const grandTotal = totalPrice + vat;
                 document.getElementById('grand-total').innerText = '$' + grandTotal;
             }
             // return the flight count using getInputValue function
